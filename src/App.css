@@ -1,3 +1,39 @@
 body {
   background-color: #e7e7e7;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.w-fit {
+ width: fit-content;
+}
+
+.text-nav-1 {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.text-nav-2 {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.text-1 {
+  font-weight: bold;
+  font-size: 40px;
+  color: #1e5369;
+}
+
+.text-2 {
+  font-weight: bold;
+  font-size: 20px;
+  color: #2c7a9f;
+}
+
+.text-err {
+  font-weight: bold;
+  font-size: 20px;
+  color: #961010;
+}

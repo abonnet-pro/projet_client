@@ -1,0 +1,16 @@
+.mw {
+    max-width: 20rem;
+}
+
+.photo-couverture {
+    width: 200px;
+    height: 200px;
+}
+
+.content {
+    width: 250px;
+}
+
+.dropdown {
+    vertical-align: text-top;
+}
