@@ -1,4 +1,5 @@
-import {API} from "../../../services/url.service";
+import {API_IMAGES} from "../../../services/url.service";
+import {Link} from "react-router-dom";
 
 export default function ListePublications({ publications, display }) {
     return(
@@ -13,8 +14,8 @@ export default function ListePublications({ publications, display }) {
                                     { publication.promotion ? <span className="badge rounded-pill bg-info ms-2">Promo</span> : null}
                                 </div>
                                 <div className="card-body align-self-center">
-                                    <img className="p-0 photo-couverture" src={ `${API}/${publication.photocouverture}` } alt="Not found"/>
-                                    <button className="btn btn-outline-primary w-100 mt-2">Voir le produit</button>
+                                    <img className="p-0 photo-couverture" src={ `${API_IMAGES}/${publication.photocouverture}` } alt="Not found"/>
+                                    <Link to={`/publication/${publication.id}`} className="btn btn-outline-primary w-100 mt-2">Voir le produit</Link>
                                 </div>
                             </div>
                         )

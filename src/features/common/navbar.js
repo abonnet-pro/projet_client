@@ -9,7 +9,8 @@ export default function NavBar() {
                 <a className="navbar-brand text-nav-1" href="/">SubMyZine</a>
                 <div className="collapse navbar-collapse" id="navbarColor01">
                     <ul className="navbar-nav me-auto">
-                        <MyNavItem itemName="Publications" path="/publication"/>
+                        <MyNavItem itemName="Publications" path="/publications"/>
+                        <MyNavItem itemName="clients" path="/clients"/>
                     </ul>
                     {
                         contextPrototype.user ? <Link to="/logout" className="btn btn-light ms-2">Se deconnecter</Link>

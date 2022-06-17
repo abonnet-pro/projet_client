@@ -14,3 +14,120 @@
 .dropdown {
     vertical-align: text-top;
 }
+
+.img-load {
+    width: 500px;
+    height: 500px;
+    box-shadow: 5px 5px 5px darkgrey;
+    border-radius: 10px;
+}
+
+.img {
+    width: 500px;
+    height: 600px;
+}
+
+.load {
+    width: 600px;
+    height: 500px;
+    margin: 40px;
+}
+
+.file-input {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.file-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-name {
+    font-weight: bold;
+    color: #1e8103;
+}
+
+
+.form-body {
+    width: 600px;
+    background-color: white;
+    margin: 20px 20px 20px 40px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(211, 211, 211, 0.51);
+}
+
+.form-title {
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.form {
+    margin-top: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+}
+
+.form-group textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+}
+
+.form-group select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+}
+
+.form-group input:focus{
+    outline: 2px solid #3a6dc4;
+}
+
+.form-group textarea:focus{
+    outline: 2px solid #3a6dc4;
+}
+
+.form-group select:focus{
+    outline: 2px solid #3a6dc4;
+}
+
+.wrap {
+    flex-flow: wrap;
+}
+
+.box {
+    position: relative;
+    width: 600px;
+    background-color: white;
+    margin: 20px 20px 20px 40px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(211, 211, 211, 0.51);
+}
+
+.detail {
+    font-weight: normal;
+    color: #2c98c1;
+}
+
+.actif {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 10px;
+}

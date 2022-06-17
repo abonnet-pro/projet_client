@@ -1,12 +1,13 @@
-import '../publication.css';
+import '../../publication/publication.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {handleError} from "../../../services/error.service";
 import {API} from "../../../services/url.service";
-import ListePublications from "./liste-publications.component";
-import FilterPublication from "./filter-publication.component";
+import ListePublications from "./publications-liste.component";
+import FilterPublication from "./publications-filter.component";
+import {Link} from "react-router-dom";
 
-export default function Publication() {
+export default function Publications() {
 
     const [publicationsActives, setPublicationsActive] = useState([])
     const [publicationsDesactives, setPublicationsDesactive] = useState([])
@@ -94,6 +95,9 @@ export default function Publication() {
 
     return(
         <div className="m-5">
+
+            <Link to="/publication/form" className="btn btn-primary mb-5">Ajouter une publication</Link>
+
             <div className="mb-3">
                 <FilterPublication recherche={ recherche } setRecherche={ setRecherche } handleSubmitRecherche={ handleSubmitRecherche }/>
             </div>

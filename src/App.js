@@ -10,7 +10,11 @@ import Login from "./features/login/component/login.component";
 import Logout from "./features/login/component/logout.component";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import Publication from "./features/publication/component/publication.component";
+import Publications from "./features/publications/component/publications.component";
+import PublicationForm from "./features/publication/component/publication-form.component";
+import PublicationDetail from "./features/publication/component/publication-detail.component";
+import Clients from "./features/clients/component/clients.component";
+import Client from "./features/client/component/client.component";
 
 function App() {
 
@@ -39,7 +43,11 @@ function App() {
                     <Route path='/' element={ <Home/> }/>
                     <Route path='/login' element={ <Login/> }/>
                     <Route path="/logout" element={ <Logout setUser={ setUser }/> }/>
-                    <Route path="/publication" element={ <Publication/>}/>
+                    <Route path="/publications" element={ <Publications/>}/>
+                    <Route path="/publication/form" element={ <PublicationForm/>}/>
+                    <Route path="/publication/:id" element={ <PublicationDetail/>}/>
+                    <Route path="/clients" element={ <Clients/>}/>
+                    <Route path="/client/:id" element={ <Client/>}/>
                 </Routes>
 
             </main>

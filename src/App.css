@@ -32,6 +32,24 @@ body {
   color: #2c7a9f;
 }
 
+.text-3 {
+  font-weight: bold;
+  font-size: 25px;
+  color: #2c7a9f;
+}
+
+.text-4 {
+  font-weight: bold;
+  font-size: 15px;
+  color: #2c7a9f;
+}
+
+.text-5 {
+  font-family: Verdana, serif;
+  font-size: 15px;
+  color: #044967;
+}
+
 .text-err {
   font-weight: bold;
   font-size: 20px;

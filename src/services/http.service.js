@@ -1,11 +1,7 @@
-import {JWT_KEY} from "./localStorage.service";
+import {USER_KEY} from "./localStorage.service";
 
 export const token = () => {
-    let token = localStorage.getItem(JWT_KEY)
-    if(token) {
-        return token.substring(0, token.length - 1).replace("\"", '');
-    }
-    return '';
+    return JSON.parse(localStorage.getItem(USER_KEY))?.token
 }
 
 export const headerToken = {
