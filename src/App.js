@@ -47,7 +47,7 @@ function App() {
                     <Route path="/publication/form" element={ <PublicationForm/>}/>
                     <Route path="/publication/:id" element={ <PublicationDetail/>}/>
                     <Route path="/clients" element={ <Clients/>}/>
-                    <Route path="/client/:id" element={ <Client/>}/>
+                    <Route path="/client/:id/*" element={ <Client/>}/>
                 </Routes>
 
             </main>

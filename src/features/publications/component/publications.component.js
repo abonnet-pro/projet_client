@@ -4,118 +4,135 @@ import axios from "axios";
 import {handleError} from "../../../services/error.service";
 import {API} from "../../../services/url.service";
 import ListePublications from "./publications-liste.component";
-import FilterPublication from "./publications-filter.component";
 import {Link} from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 export default function Publications() {
 
-    const [publicationsActives, setPublicationsActive] = useState([])
-    const [publicationsDesactives, setPublicationsDesactive] = useState([])
-    const [publicationsPromos, setPublicationsPromo] = useState([])
+    const publicationsByPage = 25
+
+    const [publications, setPublications] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const [recherche, setRecherche] = useState('')
-    const [filter, setFilter] = useState('')
 
-    const [showActives, setShowActives] = useState(true)
-    const [showDesactives, setShowDesactives] = useState(true)
-    const [showPromos, setShowPromos] = useState(true)
+    const [filterPromo, setFilterPromo] = useState()
+    const [filterActive, setFilterActive] = useState()
 
-    const [loadingActive, setLoadingActive] = useState(false)
-    const [loadingPromo, setLoadingPromo] = useState(false)
-    const [loadingDesactive, setLoadingDesactive] = useState(false)
+    const [page, setPage] = useState(0)
+    const [pageNumber, setPageNumber] = useState(0)
 
     const callApi = () => {
-        setLoadingActive(true)
-        setLoadingPromo(true)
-        setLoadingDesactive(true)
+        setLoading(true)
 
-        axios.get(`${API}/publication?active=true&promotion=false${filter}`)
+        axios.get(`${API}/publication`)
             .then(result => {
-                setLoadingActive(false)
-                setPublicationsActive(result.data)
+                setLoading(false)
+                setPublications(result.data)
             })
             .catch(error => {
-                setLoadingActive(false)
-                handleError(error)
-            });
-
-        axios.get(`${API}/publication?active=false${filter}`)
-            .then(result => {
-                setLoadingDesactive(false)
-                setPublicationsDesactive(result.data)
-            })
-            .catch(error => {
-                setLoadingDesactive(false)
-                handleError(error)
-            });
-
-        axios.get(`${API}/publication?promotion=true&active=true${filter}`)
-            .then(result => {
-                setLoadingPromo(false)
-                setPublicationsPromo(result.data)
-            })
-            .catch(error => {
-                setLoadingPromo(false)
+                setLoading(false)
                 handleError(error)
             });
     }
 
-    const onShowActive = () => {
-        setShowActives(!showActives)
+    const handleChangeActive = (event) => {
+        setFilterActive(event.target.value)
     }
 
-    const onShowDesactive = () => {
-        setShowDesactives(!showDesactives)
+    const handleChangePromo = (event) => {
+        setFilterPromo(event.target.value)
     }
 
-    const onShowPromo = () => {
-        setShowPromos(!showPromos)
+    const handlePageClick = (event) => {
+        setPage(event.selected)
     }
 
-    const getIconActives = () => {
-        return showActives ? "bi-caret-down-fill" : "bi-caret-up-fill"
+    const handleChange = (event) => {
+        setRecherche(event.target.value)
     }
 
-    const getIconDesactives = () => {
-        return showDesactives ? "bi-caret-down-fill" : "bi-caret-up-fill"
+    const getPublications = (page, recherche, filterPromo, filterActive) => {
+        let publicationCopy = [...publications]
+
+        if(filterActive && filterActive === '1') {
+            publicationCopy = publicationCopy.filter(publication => publication.active)
+        }
+
+        if(filterActive && filterActive === '2') {
+            publicationCopy = publicationCopy.filter(publication => !publication.active)
+        }
+
+        if(filterPromo && filterPromo === '1') {
+            publicationCopy = publicationCopy.filter(publication => publication.promotion)
+        }
+
+        if(recherche && recherche !== '') {
+            publicationCopy = publicationCopy.filter(publication => publication.titre.toLowerCase().includes(recherche.toLowerCase()))
+        }
+
+        if(pageNumber !== publicationCopy.length / publicationsByPage) {
+            setPageNumber(publicationCopy.length / publicationsByPage)
+        }
+
+        publicationCopy = publicationCopy.slice(page * publicationsByPage, page * publicationsByPage + publicationsByPage)
+
+        return publicationCopy
     }
 
-    const getIconPromos = () => {
-        return showPromos ? "bi-caret-down-fill" : "bi-caret-up-fill"
-    }
-
-    const handleSubmitRecherche = (event) => {
-        event.preventDefault();
-
-        let filter = `&titre=${recherche}`
-        setFilter(filter);
-    }
-
-    useEffect(callApi, [filter])
+    useEffect(callApi, [])
 
     return(
-        <div className="m-5">
+        <div>
+            <Link to="/publication/form" className="btn btn-primary mt-5 ms-5">Ajouter une publication</Link>
 
-            <Link to="/publication/form" className="btn btn-primary mb-5">Ajouter une publication</Link>
+            <div className="d-inline-flex filtre">
+                <div className="select me-4">
+                    <label htmlFor="exampleSelect1" className="form-label mt-4 text-4">Etat</label>
+                    <select className="form-select" id="exampleSelect1" onChange={ handleChangeActive }>
+                        <option value={0}>Tous</option>
+                        <option value={1}>Active</option>
+                        <option value={2}>Desactive</option>
+                    </select>
+                </div>
 
-            <div className="mb-3">
-                <FilterPublication recherche={ recherche } setRecherche={ setRecherche } handleSubmitRecherche={ handleSubmitRecherche }/>
+                <div className="select me-4">
+                    <label htmlFor="exampleSelect2" className="form-label mt-4 text-4">Promo</label>
+                    <select className="form-select" id="exampleSelect2" onChange={ handleChangePromo }>
+                        <option value={0}>Tous</option>
+                        <option value={1}>Promo</option>
+                    </select>
+                </div>
             </div>
 
-            <p className="text-1 pointer w-fit" onClick={ onShowActive }>Publications Actives<i className={ "bi ms-2 dropdown " +  getIconActives() }/></p>
+            <form className="d-flex recherche">
+                <input className="form-control me-sm-2" type="text" placeholder="Recherche par Nom d'utilisateur ou Login" name="Recherche" value={ recherche } onChange={ handleChange } />
+            </form>
+
             {
-                loadingActive ? <div className="spinner-border text-primary ms-5" role="status"/> : <ListePublications display={ showActives } publications={ publicationsActives }/>
+                loading ? <div className="spinner-border text-primary ms-5" role="status"/> : <ListePublications publications={ getPublications(page, recherche, filterPromo, filterActive) }/>
             }
 
-            <p className="text-1 pointer w-fit" onClick={ onShowPromo }>Publications Promotions<i className={ "bi ms-2 dropdown " +  getIconPromos() }/></p>
-            {
-                loadingPromo ? <div className="spinner-border text-primary ms-5" role="status"/> : <ListePublications display={ showPromos } publications={ publicationsPromos}/>
-            }
+            <ReactPaginate
+                breakClassName={'page-item'}
+                breakLinkClassName={'page-link'}
+                containerClassName={'pagination justify-content-center'}
+                pageClassName={'page-item'}
+                pageLinkClassName={'page-link'}
+                previousClassName={'page-item'}
+                previousLinkClassName={'page-link'}
+                nextClassName={'page-item'}
+                nextLinkClassName={'page-link'}
+                activeClassName={'active'}
+                breakLabel="..."
+                nextLabel="&raquo;"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={20}
+                pageCount={pageNumber}
+                previousLabel="&laquo;"
+                renderOnZeroPageCount={null}
+            />
 
-            <p className="text-1 pointer w-fit" onClick={ onShowDesactive }>Publications Desactives<i className={ "bi ms-2 dropdown " +  getIconDesactives() }/></p>
-            {
-                loadingDesactive ? <div className="spinner-border text-primary ms-5" role="status"/> : <ListePublications display={ showDesactives } publications={ publicationsDesactives }/>
-            }
         </div>
     )
 }

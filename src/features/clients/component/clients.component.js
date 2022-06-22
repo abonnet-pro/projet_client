@@ -117,7 +117,7 @@ export default function Clients() {
     }
 
     const handleClickRow = (cliendId) => {
-        navigate(`/client/${cliendId}`)
+        navigate(`/client/${cliendId}/profile`)
     }
 
     useEffect(callApi, [])
@@ -161,8 +161,8 @@ export default function Clients() {
                     <th className="text-4 text-white" scope="col">Compte actif</th>
                     <th className="text-4 text-white" scope="col">Nom d'utilisateur</th>
                     <th className="text-4 text-white" scope="col">Login</th>
-                    <th className="text-4 text-white" scope="col">Abonnement impayé</th>
-                    <th className="text-4 text-white" scope="col">Abonnement à rembourser</th>
+                    <th className="text-4 text-white" scope="col">Abonnements impayés</th>
+                    <th className="text-4 text-white" scope="col">Abonnements à rembourser</th>
                 </tr>
                 </thead>
                 <tbody>

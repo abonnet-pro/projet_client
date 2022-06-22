@@ -1,0 +1,11 @@
+.home-card {
+    margin: 50px;
+}
+
+.home-card i {
+    font-size: 300px;
+}
+
+.home-card p {
+    margin-top: -50px;
+}
