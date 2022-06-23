@@ -6,6 +6,7 @@ import {API} from "../../../services/url.service";
 import ListePublications from "./publications-liste.component";
 import {Link} from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import FilterPublications from "./publications-filter.component";
 
 export default function Publications() {
 
@@ -86,32 +87,9 @@ export default function Publications() {
         <div>
             <Link to="/publication/form" className="btn btn-primary mt-5 ms-5">Ajouter une publication</Link>
 
-            <div className="d-inline-flex filtre">
-                <div className="select me-4">
-                    <label htmlFor="exampleSelect1" className="form-label mt-4 text-4">Etat</label>
-                    <select className="form-select" id="exampleSelect1" onChange={ handleChangeActive }>
-                        <option value={0}>Tous</option>
-                        <option value={1}>Active</option>
-                        <option value={2}>Desactive</option>
-                    </select>
-                </div>
+            <FilterPublications handleChangeActive={ handleChangeActive } handleChangePromo={ handleChangePromo } recherche={recherche} handleChange={ handleChange }/>
 
-                <div className="select me-4">
-                    <label htmlFor="exampleSelect2" className="form-label mt-4 text-4">Promo</label>
-                    <select className="form-select" id="exampleSelect2" onChange={ handleChangePromo }>
-                        <option value={0}>Tous</option>
-                        <option value={1}>Promo</option>
-                    </select>
-                </div>
-            </div>
-
-            <form className="d-flex recherche">
-                <input className="form-control me-sm-2" type="text" placeholder="Recherche par Nom d'utilisateur ou Login" name="Recherche" value={ recherche } onChange={ handleChange } />
-            </form>
-
-            {
-                loading ? <div className="spinner-border text-primary ms-5" role="status"/> : <ListePublications publications={ getPublications(page, recherche, filterPromo, filterActive) }/>
-            }
+            <ListePublications loading={loading} publications={getPublications(page, recherche, filterPromo, filterActive)}/>
 
             <ReactPaginate
                 breakClassName={'page-item'}

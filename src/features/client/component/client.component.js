@@ -10,6 +10,7 @@ import ClientAbonnements from "./client-abonnements.component";
 import ClientPaiement from "./client-paiement.component";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
+import ClientCommunications from "./client-communications.component";
 
 export default function Client() {
 
@@ -68,12 +69,16 @@ export default function Client() {
                     <li className="nav-item m-2">
                         <Link to={`/client/${client?.id}/paiements`} className={"nav-link " + (splitLocation[3] === 'paiements' ? 'active' : '')}>Paiements</Link>
                     </li>
+                    <li className="nav-item m-2">
+                        <Link to={`/client/${client?.id}/communications`} className={"nav-link " + (splitLocation[3] === 'communications' ? 'active' : '')}>Communications</Link>
+                    </li>
                 </ul>
                 <div id="myTabContent" className="tab-content ms-5">
                     <Routes>
                         <Route path="profile" element={ <ClientProfile client={ client }/> }/>
                         <Route path="abonnements" element={ <ClientAbonnements abonnements={ client?.abonnements }/> }/>
                         <Route path="paiements" element={ <ClientPaiement abonnements={ client?.abonnements } refresh={ callApi }/> }/>
+                        <Route path="communications" element={ <ClientCommunications communications={ client?.communications } abonnements={ client?.abonnements }/> }/>
                     </Routes>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 import {API_IMAGES} from "../../../services/url.service";
 import {Link} from "react-router-dom";
 
-export default function ListePublications({ publications }) {
+export default function ListePublications({ publications, loading }) {
     return(
         <div className="row justify-content-center m-3">
             {
+                loading ? <div className="spinner-border text-primary ms-5 mt-5" role="status"/> :
                 publications.length > 0 ?
                 publications.map(publication => {
                     return (

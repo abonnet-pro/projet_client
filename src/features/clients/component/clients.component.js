@@ -19,6 +19,7 @@ export default function Clients() {
     const [filterImpaye, setFilterImpaye] = useState()
     const [filterRemboursement, setFilterRemboursement] = useState()
     const [filterActif, setFilterActif] = useState()
+    const [filterEtat, setFilterEtat] = useState()
     const [pageNumber, setPageNumber] = useState(0)
 
     const callApi = () => {
@@ -57,7 +58,20 @@ export default function Clients() {
         }
 
         for (let abonnement of client.abonnements) {
-            if (abonnement.dateresiliation && !abonnement.rembourse && abonnement.paye) {
+            if (abonnement.dateresiliation !== null && !abonnement.rembourse && abonnement.paye) {
+                return true
+            }
+        }
+        return false
+    }
+
+    const abonnementEnCours = (client) => {
+        if (client.abonnements.length === 0) {
+            return false
+        }
+
+        for (let abonnement of client.abonnements) {
+            if (abonnement.actif) {
                 return true
             }
         }
@@ -73,6 +87,14 @@ export default function Clients() {
 
         if(filterActif && filterActif === '2') {
             clientsCopy = clientsCopy.filter(client => !client.active)
+        }
+
+        if(filterEtat && filterEtat === '1') {
+            clientsCopy = clientsCopy.filter(client => abonnementEnCours(client))
+        }
+
+        if(filterEtat && filterEtat === '2') {
+            clientsCopy = clientsCopy.filter(client => !abonnementEnCours(client))
         }
 
         if(filterImpaye && filterImpaye === '1') {
@@ -116,6 +138,10 @@ export default function Clients() {
         setFilterActif(event.target.value)
     }
 
+    const handleChangeEtat = (event) => {
+        setFilterEtat(event.target.value)
+    }
+
     const handleClickRow = (cliendId) => {
         navigate(`/client/${cliendId}/profile`)
     }
@@ -142,11 +168,20 @@ export default function Clients() {
                     </select>
                 </div>
 
-                <div className="select">
+                <div className="select me-4">
                     <label htmlFor="exampleSelect3" className="form-label mt-4 text-4">Remboursement</label>
                     <select className="form-select" id="exampleSelect3" onChange={handleChangeRemboursement}>
                         <option value={0}>Tous</option>
                         <option value={1}>A rembourser</option>
+                    </select>
+                </div>
+
+                <div className="select">
+                    <label htmlFor="exampleSelect4" className="form-label mt-4 text-4">Etat</label>
+                    <select className="form-select" id="exampleSelect4" onChange={handleChangeEtat}>
+                        <option value={0}>Tous</option>
+                        <option value={1}>Abonné</option>
+                        <option value={2}>Pas abonné</option>
                     </select>
                 </div>
             </div>
@@ -163,28 +198,35 @@ export default function Clients() {
                     <th className="text-4 text-white" scope="col">Login</th>
                     <th className="text-4 text-white" scope="col">Abonnements impayés</th>
                     <th className="text-4 text-white" scope="col">Abonnements à rembourser</th>
+                    <th className="text-4 text-white" scope="col">Aucun abonnement en cours</th>
                 </tr>
                 </thead>
                 <tbody>
                 {
                     getClients(page, recherche, filterImpaye, filterRemboursement, filterActif).length === 0 ?
                         <tr className="text-center table-secondary">
-                            <td colSpan="5">Aucun résultat</td>
+                            <td colSpan="6">Aucun résultat</td>
                         </tr>
                         :
                     getClients(page, recherche, filterImpaye, filterRemboursement, filterActif).map(client => {
                         return (
                             <>
                                 <tr className={"pointer text-center " + getClass()} onClick={ () => handleClickRow(client.id) }>
-                                    <th scope="row">{client.active ?
+                                    <td scope="row">{client.active ?
                                         <i className="bi bi-check-circle-fill green"/> :
-                                        <i className="bi bi-x-circle-fill red"/>}</th>
+                                        <i className="bi bi-x-circle-fill red"/>}
+                                    </td>
                                     <td className="text-5">{client.displayname}</td>
                                     <td className="text-5">{client.login}</td>
                                     <td>{impaye(client) ?
-                                        <i className="bi bi-exclamation-octagon-fill"/> : null}</td>
+                                        <i className="bi bi-exclamation-octagon-fill"/> : null}
+                                    </td>
                                     <td>{resilieARembourse(client) ?
-                                        <i className="bi bi-exclamation-octagon-fill"/> : null}</td>
+                                        <i className="bi bi-exclamation-octagon-fill"/> : null}
+                                    </td>
+                                    <td>{!abonnementEnCours(client) ?
+                                        <i className="bi bi-exclamation-octagon-fill"/> : null}
+                                    </td>
                                 </tr>
                             </>
                         )

@@ -1,13 +1,27 @@
-export default function FilterPublication({ recherche, setRecherche, handleSubmitRecherche }) {
+export default function FilterPublications({ handleChangeActive, handleChangePromo, handleChange, recherche }) {
+    return <>
+        <div className="d-inline-flex filtre">
+            <div className="select me-4">
+                <label htmlFor="exampleSelect1" className="form-label mt-4 text-4">Etat</label>
+                <select className="form-select" id="exampleSelect1" onChange={ handleChangeActive }>
+                    <option value={0}>Tous</option>
+                    <option value={1}>Active</option>
+                    <option value={2}>Desactive</option>
+                </select>
+            </div>
 
-    const handleChange = (event) => {
-        setRecherche(event.target.value)
-    }
+            <div className="select me-4">
+                <label htmlFor="exampleSelect2" className="form-label mt-4 text-4">Promo</label>
+                <select className="form-select" id="exampleSelect2" onChange={ handleChangePromo }>
+                    <option value={0}>Tous</option>
+                    <option value={1}>Promo</option>
+                </select>
+            </div>
+        </div>
 
-    return(
-        <form onSubmit={ handleSubmitRecherche } className="d-flex">
-            <input className="form-control me-sm-2" type="text" placeholder="Rechercher un titre" name="recherche" value={ recherche } onChange={ handleChange } />
-            <button className="btn btn-dark my-2 my-sm-0" type="submit">Rechercher</button>
+        <form className="d-flex recherche">
+            <input className="form-control me-sm-2" type="text" placeholder="Recherche par Nom d'utilisateur ou Login"
+                   name="Recherche" value={ recherche } onChange={ handleChange }/>
         </form>
-    )
+    </>
 }

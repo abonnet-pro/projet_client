@@ -1,10 +1,11 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {API} from "../../../services/url.service";
 import {headerToken} from "../../../services/http.service";
 import {toast} from "react-toastify";
 import {handleError} from "../../../services/error.service";
+import {useLocation} from "react-router";
 
 export default function ClientAbonnements({ abonnements }) {
 
@@ -12,6 +13,8 @@ export default function ClientAbonnements({ abonnements }) {
 
     const [abonnementSelected, setAbonnementSelected] = useState()
     const [loadingMail, setLoadingMail] = useState(false)
+
+    const { state } = useLocation()
 
     const getClass = () => {
         compteur = compteur + 1
@@ -39,9 +42,13 @@ export default function ClientAbonnements({ abonnements }) {
             })
     }
 
-    const handleClickGoPaiement = () => {
-
+    const checkAbonnementSelected = () => {
+        if(state) {
+            setAbonnementSelected(state)
+        }
     }
+
+    useEffect(checkAbonnementSelected, [])
 
     return(
         <div>
@@ -64,7 +71,7 @@ export default function ClientAbonnements({ abonnements }) {
                                 <label className="mb-3 infos">{ abonnementSelected?.paye ? 'Payé' : 'Non payé' }</label>
                                 {
                                     abonnementSelected.paye ?
-                                        <Link to={ `/client/${abonnementSelected.clientid}/paiements` } state={ abonnementSelected.paiement } className="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir le paiement" onClick={ handleClickGoPaiement }>
+                                        <Link to={ `/client/${abonnementSelected.clientid}/paiements` } state={ abonnementSelected.paiement } className="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir le paiement">
                                             <i className="bi bi-box-arrow-right"/>
                                         </Link>
                                         :
@@ -102,47 +109,49 @@ export default function ClientAbonnements({ abonnements }) {
                         </div>
                     </>
                     :
-                    <table className="table table-bordered mt-5">
-                        <thead className="bg-primary text-center">
-                        <tr id="head">
-                            <th className="text-4 text-white" scope="col">En cours</th>
-                            <th className="text-4 text-white" scope="col">Publication</th>
-                            <th className="text-4 text-white" scope="col">Payé</th>
-                            <th className="text-4 text-white" scope="col">Résilié</th>
-                            <th className="text-4 text-white" scope="col">Remboursé</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            abonnements?.length === 0 ?
-                                <tr className="text-center table-secondary">
-                                    <td colSpan="5">Aucun abonnements</td>
-                                </tr>
-                                :
-                                abonnements?.map(abonnement => {
-                                    return (
-                                        <>
-                                            <tr className={"pointer text-center " + getClass()} onClick={ () => handleClickRow(abonnement) }>
-                                                <th scope="row">{abonnement.actif ?
-                                                    <i className="bi bi-check-circle-fill green"/> :
-                                                    <i className="bi bi-x-circle-fill red"/>}</th>
-                                                <td className="text-5">{abonnement?.publication.titre}</td>
-                                                <th scope="row">{abonnement.paye ?
-                                                    <i className="bi bi-check-circle-fill green"/> :
-                                                    <i className="bi bi-x-circle-fill red"/>}</th>
-                                                <th scope="row">{abonnement.dateresiliation ?
-                                                    <i className="bi bi-check-circle-fill green"/> :
-                                                    <i className="bi bi-x-circle-fill red"/>}</th>
-                                                <th scope="row">{abonnement.rembourse ?
-                                                    <i className="bi bi-check-circle-fill green"/> :
-                                                    <i className="bi bi-x-circle-fill red"/>}</th>
-                                            </tr>
-                                        </>
-                                    )
-                                })
-                        }
-                        </tbody>
-                    </table>
+                    <>
+                        <table className="table table-bordered mt-5">
+                            <thead className="bg-primary text-center">
+                            <tr id="head">
+                                <th className="text-4 text-white" scope="col">En cours</th>
+                                <th className="text-4 text-white" scope="col">Publication</th>
+                                <th className="text-4 text-white" scope="col">Payé</th>
+                                <th className="text-4 text-white" scope="col">Résilié</th>
+                                <th className="text-4 text-white" scope="col">Remboursé</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                abonnements?.length === 0 ?
+                                    <tr className="text-center table-secondary">
+                                        <td colSpan="5">Aucun abonnements</td>
+                                    </tr>
+                                    :
+                                    abonnements?.map(abonnement => {
+                                        return (
+                                            <>
+                                                <tr className={"pointer text-center " + getClass()} onClick={ () => handleClickRow(abonnement) }>
+                                                    <th scope="row">{abonnement.actif ?
+                                                        <i className="bi bi-check-circle-fill green"/> :
+                                                        <i className="bi bi-x-circle-fill red"/>}</th>
+                                                    <td className="text-5">{abonnement?.publication.titre}</td>
+                                                    <th scope="row">{abonnement.paye ?
+                                                        <i className="bi bi-check-circle-fill green"/> :
+                                                        <i className="bi bi-x-circle-fill red"/>}</th>
+                                                    <th scope="row">{abonnement.dateresiliation ?
+                                                        <i className="bi bi-check-circle-fill green"/> :
+                                                        <i className="bi bi-x-circle-fill red"/>}</th>
+                                                    <th scope="row">{abonnement.rembourse ?
+                                                        <i className="bi bi-check-circle-fill green"/> :
+                                                        <i className="bi bi-x-circle-fill red"/>}</th>
+                                                </tr>
+                                            </>
+                                        )
+                                    })
+                            }
+                            </tbody>
+                        </table>
+                    </>
             }
         </div>
     )
