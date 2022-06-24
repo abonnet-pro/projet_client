@@ -11,7 +11,11 @@ export function connect(user, navigate) {
             localStorage.clear();
             setLocaleStorage(USER_KEY, result.data)
             contextPrototype.setUser(result.data);
-            navigate('/');
+            if(result.data.premiereConnexion) {
+                navigate('/login/password');
+            } else {
+                navigate('/');
+            }
         })
         .catch(error => handleError(error));
 }

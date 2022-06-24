@@ -1,6 +1,7 @@
 import {contextPrototype} from "../../services/usersContext.service";
 import {Link} from "react-router-dom";
 import MyNavItem from "./navItem";
+import {admin} from "../../services/role.service";
 
 export default function NavBar() {
     return(
@@ -10,10 +11,13 @@ export default function NavBar() {
                 <div className="collapse navbar-collapse" id="navbarColor01">
                     <ul className="navbar-nav me-auto">
                         {
-                            contextPrototype.user ?
+                            contextPrototype.user && !contextPrototype.user.premiereConnexion ?
                                 <>
                                     <MyNavItem itemName="Publications" path="/publications"/>
                                     <MyNavItem itemName="clients" path="/clients"/>
+                                    {
+                                        admin() ? <MyNavItem itemName="employes" path="/employes"/> : null
+                                    }
                                 </>
                                 : null
                         }
