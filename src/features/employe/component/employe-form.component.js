@@ -1,5 +1,5 @@
 import {useLocation, useNavigate} from "react-router";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {API} from "../../../services/url.service";
 import {headerToken} from "../../../services/http.service";
@@ -10,6 +10,7 @@ import {Button, Modal} from "react-bootstrap";
 export default function EmployeForm() {
 
     const { state }  = useLocation();
+    const navigate = useNavigate()
 
     const initForm = { nom: '', prenom: '', login: '', password: '', role: 'EMPLOYE' };
     const [form, setForm] = useState(initForm);
@@ -19,9 +20,39 @@ export default function EmployeForm() {
 
     const handleCloseModal = () => setShowModal(false);
 
+    const checkEdit = () => {
+        if(state) {
+            setForm({ nom: state.nom, prenom: state.prenom, login: state.login, role: state.role, password: '' })
+        } else {
+            setForm(initForm)
+        }
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault()
 
+        if(state) {
+            handleSubmitEditEmploye(state.id);
+        } else {
+            handleSubmitAddEmploye();
+        }
+    }
+
+    const handleSubmitEditEmploye = (employeId) => {
+        axios.patch(`${API}/employe/${employeId}`, form, headerToken)
+            .then(res => {
+                console.log(res)
+                if(res.data) {
+                    toast.success("Employé modifié avec succès");
+                    navigate(`/employe/${employeId}`)
+                }
+            })
+            .catch((error) => {
+                handleError(error)
+            })
+    }
+
+    const handleSubmitAddEmploye = () => {
         axios.post(`${API}/employe`, form, headerToken)
             .then(res => {
                 console.log(res)
@@ -29,6 +60,7 @@ export default function EmployeForm() {
                     toast.success("Employé créé avec succès");
                     setShowModal(true);
                     setPasswordProvisoire(res.data.password)
+                    setForm(initForm)
                 }
             })
             .catch((error) => {
@@ -45,6 +77,8 @@ export default function EmployeForm() {
     const handleChangeRole = (event) => {
         setForm({ ...form, role: event.target.value })
     }
+
+    useEffect(checkEdit, [])
 
     return(
         <>
@@ -84,14 +118,14 @@ export default function EmployeForm() {
                                 <div className="text-2 mb-2">
                                     <label htmlFor="login">Login</label>
                                 </div>
-                                <input name="login" type="text" className="form-control" id="login" placeholder="Entrer le login" value={ form.login} onChange={ handleChange } required/>
+                                <input name="login" type="text" disabled={!!state} className="form-control" id="login" placeholder="Entrer le login" value={ form.login } onChange={ handleChange } required/>
                             </div>
 
                             <div className="form-group">
                                 <div className="text-2 mb-2">
                                     <label htmlFor="titre">Role</label>
                                 </div>
-                                <select className="form-select form-control" id="exampleSelect1" onChange={ handleChangeRole }>
+                                <select className="form-select form-control" id="exampleSelect1" onChange={ handleChangeRole } defaultValue={ state ? state.role : 'EMPLOYE' }>
                                     <option value={'EMPLOYE'}>Employe</option>
                                     <option value={'ADMIN'}>Admin</option>
                                 </select>

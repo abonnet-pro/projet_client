@@ -1,11 +1,18 @@
 .home-card {
     margin: 50px;
+    width: 410px;
+    text-align-last: center;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
 }
 
 .home-card i {
     font-size: 300px;
+    line-height: normal;
 }
 
 .home-card p {
-    margin-top: -50px;
+    margin-top: -30px;
+    margin-bottom: 30px;
 }

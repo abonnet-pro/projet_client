@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {headerToken} from "../../../services/http.service";
 import {Link} from "react-router-dom";
-import {admin} from "../../../services/role.service";
+import {admin, superadmin} from "../../../services/role.service";
 import {Button, Modal} from 'react-bootstrap'
 
 export default function PublicationDetail() {
@@ -94,7 +94,7 @@ export default function PublicationDetail() {
                     </div>
                     <div className="box m-4">
                         {
-                            admin() ? <button className="btn btn-outline-danger float-end ms-2" onClick={ handleShowModal }><i className="bi bi-trash-fill"/></button> : null
+                            admin() || superadmin() ? <button className="btn btn-outline-danger float-end ms-2" onClick={ handleShowModal }><i className="bi bi-trash-fill"/></button> : null
                         }
                         <Link to="/publication/form" state={ publication } className="btn btn-primary float-end"><i className="bi bi-pencil-fill text-white"/></Link>
                         <div className="text-3">

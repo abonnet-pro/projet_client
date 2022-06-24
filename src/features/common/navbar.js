@@ -1,7 +1,7 @@
 import {contextPrototype} from "../../services/usersContext.service";
 import {Link} from "react-router-dom";
 import MyNavItem from "./navItem";
-import {admin} from "../../services/role.service";
+import {admin, superadmin} from "../../services/role.service";
 
 export default function NavBar() {
     return(
@@ -16,7 +16,7 @@ export default function NavBar() {
                                     <MyNavItem itemName="Publications" path="/publications"/>
                                     <MyNavItem itemName="clients" path="/clients"/>
                                     {
-                                        admin() ? <MyNavItem itemName="employes" path="/employes"/> : null
+                                        admin() || superadmin() ? <MyNavItem itemName="employes" path="/employes"/> : null
                                     }
                                 </>
                                 : null

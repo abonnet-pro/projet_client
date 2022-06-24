@@ -50,7 +50,7 @@ export default function Employes() {
         }
 
         if(filterRole && filterRole === '1') {
-            employesCopy = employesCopy.filter(employe => employe.role === 'ADMIN')
+            employesCopy = employesCopy.filter(employe => employe.role === 'ADMIN' || employe.role === 'SUPERADMIN')
         }
 
         if(filterRole && filterRole === '2') {
