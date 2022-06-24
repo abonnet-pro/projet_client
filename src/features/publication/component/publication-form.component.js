@@ -14,6 +14,7 @@ export default function PublicationForm() {
     const [form, setForm] = useState(initForm);
     const [file, setFile] = useState()
     const [imgUpload, setImgUpload] = useState()
+    const [imgServeur, setImgServeur] = useState()
     const [loadingUpload, setLoadingUpload] = useState(false)
 
     const checkEdit = () => {
@@ -32,6 +33,8 @@ export default function PublicationForm() {
     }
 
     const handleChangeFile = (event) => {
+        setImgUpload(null)
+        setImgServeur(null)
         setFile(event.target.files)
     }
 
@@ -110,17 +113,51 @@ export default function PublicationForm() {
             .catch((error) => handleError(error))
     }
 
+    const handleClickLoadImgServeur = () => {
+        axios.get(`${API}/upload`, headerToken)
+            .then(res => {
+                setImgUpload(null)
+                setFile(null)
+                setImgServeur(res.data.images)
+            })
+            .catch((error) => handleError(error))
+    }
+
+    const handleClickImgServeur = (img) => {
+        setImgUpload(img)
+    }
+
     useEffect(checkEdit, [])
 
     return(
         <div className="row justify-content-center">
             <div className="load">
-                <img className="img-load" src={ imgUpload ? `${API_IMAGES}/${imgUpload}` : NO_IMAGE } alt="Image not found"/>
+                <div>
+                    {
+                        imgServeur && !imgUpload ?
+                            <div className="ms-4 img-load-2">
+                                {
+                                    imgServeur.map(img => {
+                                        return(
+                                            <img className="pointer img-load-serveur m-1" src={ `${API_IMAGES}/${img}` } alt="Image not found" onClick={ () => handleClickImgServeur(img) }/>
+                                        )
+                                    })
+                                }
+                            </div>
+                            :
+                            <img className="img-load" src={ imgUpload ? `${API_IMAGES}/${imgUpload}` : NO_IMAGE } alt="Image not found"/>
+                    }
+                </div>
+
                 <div className="mt-5 d-flex justify-content-center">
-                    <div className="file-btn btn btn-primary m-1">Choisir une image
+
+                    <div className="file-btn btn btn-primary m-1">Image ordinateur
                         <input className="file-input pointer" type="file" name="image" id="image" onChange={ handleChangeFile }/>
                     </div>
-                    <button className={ "m-1 btn btn-outline-primary " } type="button" onClick={ () => {
+
+                    <button className="btn btn-primary m-1" onClick={ handleClickLoadImgServeur }>Image serveur</button>
+
+                    <button className={ "m-1 btn btn-outline-primary " + (imgServeur ? 'disabled' : '')} type="button" onClick={ () => {
                         setLoadingUpload(true)
                         uploadImg()
                     } }>
@@ -129,7 +166,20 @@ export default function PublicationForm() {
                         }
                     </button>
                 </div>
-                <p className="text-center mt-3 file-name">{ file && file[0].name }</p>
+                <p className={"text-center mt-3 file-name " + (imgUpload ? 'text-success' : 'text-danger')}>{ file && file[0]?.name }
+                    {
+                        imgUpload && !imgServeur ?
+                            <i className="ms-2 bi bi-check-circle-fill text-success"/>
+                            :
+                            null
+                    }
+                    {
+                        !imgUpload && file && file[0]?.name ?
+                            <i data-bs-toggle="tooltip" data-bs-placement="top" title="L'image n'a pas été upload sur le serveur" className="ms-2 bi bi-exclamation-diamond-fill text-danger"/>
+                            :
+                            null
+                    }
+                </p>
             </div>
             <div className="form-body">
                 <h2 className="text-1 text-center mb-4">{ state ? 'Modifier la publication' : 'Ajouter une publication' }</h2>
