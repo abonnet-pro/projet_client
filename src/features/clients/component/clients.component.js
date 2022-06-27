@@ -111,6 +111,7 @@ export default function Clients() {
 
         if(pageNumber !== clientsCopy.length / clientsByPage) {
             setPageNumber(clientsCopy.length / clientsByPage)
+            setPage(0)
         }
 
         clientsCopy = clientsCopy.slice(page * clientsByPage, page * clientsByPage + clientsByPage)

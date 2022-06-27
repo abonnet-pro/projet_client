@@ -38,7 +38,6 @@ export default function Employes() {
     }
 
     const getEmploye = (page, recherche, filterActif, filterRole) => {
-
         let employesCopy = [...employes]
 
         if(filterActif && filterActif === '1') {
@@ -58,10 +57,11 @@ export default function Employes() {
         }
 
         if(recherche && recherche !== '') {
-            employesCopy = employesCopy.filter(employe => employe.login.includes(recherche))
+            employesCopy = employesCopy.filter(employe => employe.login.includes(recherche) || employe.nom.includes(recherche) || employe.prenom.includes(recherche))
         }
 
         if(pageNumber !== employesCopy.length / employesByPage) {
+            setPage(0)
             setPageNumber(employesCopy.length / employesByPage)
         }
 
@@ -117,7 +117,7 @@ export default function Employes() {
             </div>
 
             <form className="d-flex recherche">
-                <input className="form-control me-sm-2" type="text" placeholder="Recherche par Nom d'utilisateur ou Login" name="Recherche" value={ recherche } onChange={ handleChange } />
+                <input className="form-control me-sm-2" type="text" placeholder="Recherche par Nom, Prénom ou Login" name="Recherche" value={ recherche } onChange={ handleChange } />
             </form>
 
             <table className="table table-bordered clients ">

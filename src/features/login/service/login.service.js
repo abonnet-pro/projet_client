@@ -10,6 +10,7 @@ export function connect(user, navigate) {
         .then((result) => {
             localStorage.clear();
             setLocaleStorage(USER_KEY, result.data)
+            // setLocaleStorage("token", result.data.token)
             contextPrototype.setUser(result.data);
             if(result.data.premiereConnexion) {
                 navigate('/login/password');

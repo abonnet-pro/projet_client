@@ -3,7 +3,7 @@ import {contextPrototype} from "../../services/usersContext.service";
 import {useNavigate} from "react-router";
 import './home.css'
 import {Link} from "react-router-dom";
-import {superadmin} from "../../services/role.service";
+import {admin, superadmin} from "../../services/role.service";
 
 export default function Home() {
 
@@ -30,7 +30,7 @@ export default function Home() {
             </Link>
 
             {
-                superadmin() ?
+                admin() ?
                     <Link to='/employes' className="w-fit home-card pointer text-decoration-none">
                         <i className="bi bi-person-workspace text-primary"/>
                         <p className="text-center text-1 text-primary">Employés</p>
