@@ -1,6 +1,6 @@
 import {USER_KEY} from "./localStorage.service";
 
-function token () {
+export const token = () => {
     return JSON.parse(localStorage.getItem(USER_KEY))?.token
 }
 

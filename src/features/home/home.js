@@ -30,7 +30,7 @@ export default function Home() {
             </Link>
 
             {
-                admin() ?
+                admin() || superadmin() ?
                     <Link to='/employes' className="w-fit home-card pointer text-decoration-none">
                         <i className="bi bi-person-workspace text-primary"/>
                         <p className="text-center text-1 text-primary">Employés</p>
