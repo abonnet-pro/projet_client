@@ -18,11 +18,12 @@ export default function ClientCommunications({ communications, abonnements }) {
         let paiement = communication.objet.includes('PAIEMENT') || communication.objet.includes('REMBOURSEMENT')
         let abonnement = communication.objet.includes('ABONNEMENT')
         if(!paiement && !abonnement) return
-        let id = communication.objet.slice(-1)
+        let array = communication.objet.split('_')
+        let id = array[array.length - 1]
 
         if(paiement) {
             for(let abonnement of abonnements) {
-                if(abonnement.paiement.id.toString() === id) {
+                if(abonnement?.paiement?.id.toString() === id) {
                     navigate(`/client/${abonnement.clientid}/paiements`, { state: abonnement.paiement })
                 }
             }
@@ -30,7 +31,7 @@ export default function ClientCommunications({ communications, abonnements }) {
 
         if(abonnement) {
             for(let abonnement of abonnements) {
-                if(abonnement.id.toString() === id) {
+                if(abonnement?.id.toString() === id) {
                     navigate(`/client/${abonnement.clientid}/abonnements`, { state: abonnement })
                 }
             }
