@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import {handleError} from "../../../services/error.service";
 import {useState} from "react";
 
-export default function ClientProfile({ client }) {
+export default function ClientProfile({ client, refresh }) {
 
     const [loadingMail, setLoadingMail] = useState(false)
 
@@ -27,6 +27,7 @@ export default function ClientProfile({ client }) {
             .then(res => {
                 setLoadingMail(false)
                 toast.success(`Email envoyé avec succès`)
+                refresh()
             })
             .catch(err => {
                 setLoadingMail(false)

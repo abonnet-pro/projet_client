@@ -75,8 +75,8 @@ export default function Client() {
                 </ul>
                 <div id="myTabContent" className="tab-content ms-5">
                     <Routes>
-                        <Route path="profile" element={ <ClientProfile client={ client }/> }/>
-                        <Route path="abonnements" element={ <ClientAbonnements abonnements={ client?.abonnements }/> }/>
+                        <Route path="profile" element={ <ClientProfile client={ client } refresh={ callApi }/> }/>
+                        <Route path="abonnements" element={ <ClientAbonnements abonnements={ client?.abonnements } refresh={ callApi }/> }/>
                         <Route path="paiements" element={ <ClientPaiement abonnements={ client?.abonnements } refresh={ callApi }/> }/>
                         <Route path="communications" element={ <ClientCommunications communications={ client?.communications } abonnements={ client?.abonnements }/> }/>
                     </Routes>

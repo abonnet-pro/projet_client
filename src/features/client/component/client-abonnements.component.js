@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 import {handleError} from "../../../services/error.service";
 import {useLocation} from "react-router";
 
-export default function ClientAbonnements({ abonnements }) {
+export default function ClientAbonnements({ abonnements, refresh }) {
 
     let compteur = 0
 
@@ -35,6 +35,7 @@ export default function ClientAbonnements({ abonnements }) {
             .then(res => {
                 setLoadingMail(false)
                 toast.success(`Email envoyé avec succès`)
+                refresh()
             })
             .catch(err => {
                 setLoadingMail(false)
