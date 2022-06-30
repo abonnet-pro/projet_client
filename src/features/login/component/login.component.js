@@ -5,7 +5,7 @@ import {useNavigate} from "react-router";
 
 export default function Login() {
 
-    const [form, setForm] = useState({ login: 'admin@submyzine.fr', password: 'admin' });
+    const [form, setForm] = useState({ login: '', password: '' });
     const navigate = useNavigate();
 
     const handleChange = (event) => {
